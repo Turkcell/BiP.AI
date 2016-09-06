@@ -1,0 +1,95 @@
+package com.turkcell.bipai.helloworld.model;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import com.google.gson.Gson;
+import com.turkcell.bipai.helloworld.model.fts.data.Data;
+import com.turkcell.bipai.helloworld.model.fts.request.FtsRequest;
+import com.turkcell.bipai.helloworld.model.fts.response.FtsResponse;
+import com.turkcell.bipai.helloworld.service.Message;
+
+public class Upload {
+
+	private static final Logger logger = LoggerFactory.getLogger(Upload.class);
+	/**
+	 * FTS sunucusna istenen url'deki resmi yükler ve geriye yüklenmiş resmin FTS'deki url'ini döner. 
+	 * 
+	 * @param fileType FTS sunucusuna yüklenecek medyanın tipi, fotoğraf için "P", video için "V"
+	 * @param urlToUploadAndSend FTS sunucusna yüklenecek resmin url'i
+	 * @return imageMap dosyanın url ve size bilgilerini tutan Map dönülür.
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * 
+	 * @see <a href="http://www.bip.ai/documentations/fts-api/">FTS detaylı bilgi</a>
+	 */
+	public Map<String, Object> uploadToFts(String fileType, String urlToUploadAndSend) throws IOException, URISyntaxException {
+		/**
+		 * FTS servisinin upload methodu ile gönderilecek dosyayı FTS sunucusuna yükle ve url'ini al
+		 */
+		FtsRequest ftsRequestData = new FtsRequest();
+		ftsRequestData.setTxnid(UUID.randomUUID().toString()); //Random bir txn id al
+		ftsRequestData.setReceiver(""); // Boş bırakılacak
+		ftsRequestData.setAvatarOwner(""); // Boş bırakılacak
+		ftsRequestData.setIsGroup("false"); // false değer verilmeli
+		ftsRequestData.setIsAvatar("false"); // false değer verilmeli
+		ftsRequestData.setToUser(""); // Boş bırakılacak
+		ftsRequestData.setFileType(fileType); // fotoğraf için "P", video için "V" girilmeli
+
+		//Gönderilecek dosyayı url'ini kullanarak oku. Boyut bilgilerini al. 
+		URL url 				= new URL(urlToUploadAndSend);
+		InputStream inputStream = url.openStream();
+		byte[] byteArr 			= getBytesFromInputStream(inputStream);
+		int imageSize			= byteArr.length;
+		
+		//file ve data bilgilerini rest çağrısına göndermek için Map'e ekle. FTS sunucusu Multipart-Form-Data kabul ettiğinden
+		// file ve data MultiValueMap'e eklenir.
+		final MultiValueMap<String, Object> ftsRequest = new LinkedMultiValueMap<String, Object>();
+        ftsRequest.add("file", new FileMessageResource(byteArr, System.currentTimeMillis() + ".png"));
+        ftsRequest.add("data", new Gson().toJson(ftsRequestData));
+
+		logger.info("Request json: " + new Gson().toJson(ftsRequest));
+		
+		Message message = new Message();
+		FtsResponse ftsResponse = message.send(ftsRequest);
+		
+		//Upload edilen medyanın bilgilerini bir map'e ekle ve dönüş değeri olarak gönder
+		Map<String, Object> imageMap = new HashMap<String, Object>();
+		imageMap.put("url", ftsResponse.getUrl());
+		imageMap.put("size", imageSize);
+		
+		return imageMap;
+	}
+
+	
+	/**
+	 * Inputstream olarak verilen dosyayı okur ve btye[] olarak geri döndürür. 
+	 * @param is okunacak input stream
+	 * @return okunan input stream'i btye[] olarak geri döndürür.
+	 * @throws IOException
+	 */
+	private static byte[] getBytesFromInputStream(InputStream is) throws IOException
+	{
+		try (ByteArrayOutputStream os = new ByteArrayOutputStream();)
+		{
+			byte[] buffer = new byte[0xFFFF];
+
+			for (int len; (len = is.read(buffer)) != -1;)
+				os.write(buffer, 0, len);
+			os.flush();
+
+			return os.toByteArray();
+		}
+	}
+}

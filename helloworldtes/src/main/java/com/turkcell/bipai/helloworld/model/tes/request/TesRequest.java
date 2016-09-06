@@ -1,82 +1,72 @@
 
-package com.turkcell.bipai.helloworld.model;
+package com.turkcell.bipai.helloworld.model.tes.request;
+
+import com.turkcell.bipai.helloworld.model.tes.data.Composition;
 
 /**
  * 
- * Bu uygulama ile açılan REST servisin hello metoduna gönderilecek JSON parametrelerini tutan sınıftır. 
- * Parametre bilgileri için http://www.bip.ai/documentations/mesaj-alma/
- *
+ * TES servisi üzerinden mesaj göndermek için gereken bilgileri tutan talep (request) üst sınıfıdır. 
+ * Mesajın tek kullanıcı, çok kullanıcı veya çok kulalnıcıya farklı gönderim çeşitlerinden biri
+ * olmasına bağlı olarak alt sınıflar tarafından extend edilir.
+ * 
  * @author BiP AI
  * 
- * @see <a href="http://www.bip.ai/documentations/mesaj-alma/">http://www.bip.ai/documentations/mesaj-alma</a>
  */
-public class BiPTesInput {
-
-	private String	sender;
-	private Integer	msgid;
-	private String	sendtime;
-	private String	type;
-	private String	ctype;
-	private String	content;
-
-
-	public String getSender() {
-		return sender;
+public class TesRequest {
+	
+	private String			txnid;
+	private Composition 	composition;
+	private Integer			expire;
+	private String			fileUrl;
+	private String			fileType;
+	
+	public String getTxnid() {
+		return txnid;
+	}
+	
+	
+	public void setTxnid(String txnid) {
+		this.txnid = txnid;
+	}
+	
+	
+	public Integer getExpire() {
+		return expire;
+	}
+	
+	
+	public void setExpire(Integer expire) {
+		this.expire = expire;
+	}
+	
+	
+	public Composition getComposition() {
+		return composition;
+	}
+	
+	
+	public void setComposition(Composition composition) {
+		this.composition = composition;
 	}
 
 
-	public void setSender(String sender) {
-		this.sender = sender;
+	public String getFileUrl() {
+		return fileUrl;
 	}
 
 
-	public Integer getMsgid() {
-		return msgid;
+	public void setFileUrl(String uploadUrl) {
+		this.fileUrl = uploadUrl;
 	}
 
 
-	public void setMsgid(Integer msgid) {
-		this.msgid = msgid;
+	public String getFileType() {
+		return fileType;
 	}
 
 
-	public String getSendtime() {
-		return sendtime;
-	}
-
-
-	public void setSendtime(String sendtime) {
-		this.sendtime = sendtime;
-	}
-
-
-	public String getType() {
-		return type;
-	}
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
-	public String getCtype() {
-		return ctype;
-	}
-
-
-	public void setCtype(String ctype) {
-		this.ctype = ctype;
-	}
-
-
-	public String getContent() {
-		return content;
-	}
-
-
-	public void setContent(String content) {
-		this.content = content;
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 
 }

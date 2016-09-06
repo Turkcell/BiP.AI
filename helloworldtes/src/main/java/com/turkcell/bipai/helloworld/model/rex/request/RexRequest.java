@@ -1,6 +1,8 @@
-package com.turkcell.bipai.helloworld.model;
+package com.turkcell.bipai.helloworld.model.rex.request;
 
 import java.util.Map;
+
+import com.turkcell.bipai.helloworld.model.rex.data.Composition;
 
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  * 
  * @see <a href="http://www.bip.ai/documentations/rex-api/">http://www.bip.ai/documentations/rex-api</a>
  */
-public class BiPRexInput {
+public class RexRequest {
 
 	private String		keyword;
 	private String		msgId;
