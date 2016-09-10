@@ -10,7 +10,7 @@ import java.util.Map;
  * @author BiP AI
  * 
  */
-public class Content {
+public class RexOutput {
 
 	private Integer				type;
 	private String				message;

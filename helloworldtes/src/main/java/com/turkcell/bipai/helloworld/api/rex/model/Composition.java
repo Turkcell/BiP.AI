@@ -1,5 +1,5 @@
 
-package com.turkcell.bipai.helloworld.model.rex.data;
+package com.turkcell.bipai.helloworld.api.rex.model;
 
 import java.util.ArrayList;
 import java.util.List;

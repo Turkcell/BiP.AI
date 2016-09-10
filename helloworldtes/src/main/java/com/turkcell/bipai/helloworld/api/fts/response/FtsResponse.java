@@ -1,4 +1,4 @@
-package com.turkcell.bipai.helloworld.model.fts.response;
+package com.turkcell.bipai.helloworld.api.fts.response;
 
 
 /**

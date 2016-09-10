@@ -13,13 +13,7 @@ import org.springframework.web.servlet.view.BeanNameViewResolver;
 @EnableWebMvc
 @ComponentScan("com.turkcell.bipai.helloworld.*")
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
-	
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-	   registry.addViewController("/hello").setViewName("hello");
-	}
-	
-	
+
 	@Bean
     public BeanNameViewResolver beanViewResolver() {
         BeanNameViewResolver resolver = new BeanNameViewResolver();

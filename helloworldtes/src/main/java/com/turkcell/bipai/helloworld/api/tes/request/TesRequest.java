@@ -1,24 +1,22 @@
 
-package com.turkcell.bipai.helloworld.model.tes.request;
+package com.turkcell.bipai.helloworld.api.tes.request;
 
-import com.turkcell.bipai.helloworld.model.tes.data.Composition;
+import com.turkcell.bipai.helloworld.api.tes.model.Composition;
 
 /**
  * 
- * TES servisi üzerinden mesaj göndermek için gereken bilgileri tutan talep (request) üst sınıfıdır. 
+ * TES servisi üzerinden mesaj göndermek için TES servisinin kabul ettiği JSON formatına uygun alanları tutan talep (request) sınıfıdır.
  * Mesajın tek kullanıcı, çok kullanıcı veya çok kulalnıcıya farklı gönderim çeşitlerinden biri
  * olmasına bağlı olarak alt sınıflar tarafından extend edilir.
  * 
  * @author BiP AI
  * 
  */
-public class TesRequest {
+public class TesRequest { 
 	
-	private String			txnid;
-	private Composition 	composition;
-	private Integer			expire;
-	private String			fileUrl;
-	private String			fileType;
+	private String			txnid;			// Mesaja ait tekil id
+	private Composition 	composition;	// Her bir mesajın Content olarak tutulduğu Listeyi saklayan model
+	private Integer			expire;			// Mesajın takipçide görünme süresi
 	
 	public String getTxnid() {
 		return txnid;
@@ -47,26 +45,6 @@ public class TesRequest {
 	
 	public void setComposition(Composition composition) {
 		this.composition = composition;
-	}
-
-
-	public String getFileUrl() {
-		return fileUrl;
-	}
-
-
-	public void setFileUrl(String uploadUrl) {
-		this.fileUrl = uploadUrl;
-	}
-
-
-	public String getFileType() {
-		return fileType;
-	}
-
-
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
 	}
 
 }

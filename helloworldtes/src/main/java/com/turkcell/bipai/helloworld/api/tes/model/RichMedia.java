@@ -1,11 +1,12 @@
-package com.turkcell.bipai.helloworld.model.tes.data;
+package com.turkcell.bipai.helloworld.api.tes.model;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 
- * Zengin İçerikli Medya (RMM) bilgilerinin tutulduğu modeldir. 
+ * Zengin İçerikli Medya (RMM) bilgilerinin tutulduğu modeldir. Tekil ve Anket tipi RMM gönderimlerinde listeye 1 adet obje eklenir. 
+ * Çoğul tipi gönderimlerde listedeki ilk eleman RMM’in üst kısmında, diğer elemanlar alt madde olarak görülür.
  * Formatı:
  <pre>
 ...
@@ -35,25 +36,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 ]
 ...
 </pre>
- * @see <a href="http://www.bip.ai/documentations/content-type-ozelindeki-kontroller/">RMM bilgileri</a>
+ * @see <a href="http://www.bip.ai/documentations/tek-kullaniciya-mesaj-gonderimi/">RMM bilgileri</a>
  * @author BiP AI
  * 
 */
 
 public class RichMedia {
 	
-	private String 			title;
-	private String 			image;
-	private Float  			ratio;
-	private String 			description;
-	private String 			url;
-	private String 			urltext;
-	private String 			pollid;
-	private List<Option> 	options;	
-	private String 			text;
+	private String 			title;			// Zengin Medya başlığı
+	private String 			image;			// Zengin Medyaya ait fotoğraf. Öncelikle FTS API ile server'a yüklenmelidir. FTS API'den alınan URL buraya verilmeli.
+	private Float  			ratio;			// Fotoğrafa ait ratio
+	private String 			description;	// Zengin Medyanın 
+	private String 			url;			// Zengin Medyadan yönlendirilecek URL
+	private String 			urltext;		// URL'i temsil eden metin
+	private String 			pollid;			// Ankete ait tekil id. Zengin Medya anket tipinde değilse bu değer boş olmalıdır.
+	private List<Option> 	options;		// Ankete ait seçeneklerin tutulduğu model. Zengin Medya anket tipinde değilse bu değer boş olmalıdır.
 	
-	@JsonFormat(pattern="dd.MM.yyyy HH:mm:ss.SSS ZZZZ")
-	private String 			pollendtime;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy HH:mm:ss.SSS ZZZZ") 
+	private String 			pollendtime;	// Anket bitiş tarihi. Zengin Medya anket tipinde değilse bu değer boş olmalıdır.
 	
 
 	public String getTitle() {
@@ -141,16 +141,6 @@ public class RichMedia {
 	
 	public void setOptions(List<Option> options) {
 		this.options = options;
-	}
-	
-	
-	public String getText() {
-		return text;
-	}
-	
-	
-	public void setText(String text) {
-		this.text = text;
 	}
 	
 }

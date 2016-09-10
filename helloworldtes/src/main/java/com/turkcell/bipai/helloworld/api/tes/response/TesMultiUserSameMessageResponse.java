@@ -1,17 +1,17 @@
-package com.turkcell.bipai.helloworld.model.tes.response;
+package com.turkcell.bipai.helloworld.api.tes.response;
 
-import com.turkcell.bipai.helloworld.model.tes.data.Report;
+import com.turkcell.bipai.helloworld.api.tes.model.Report;
 
 /**
  * 
- * TES servisi üzerinden gelen mesajın bilgilerini tutan cevap (response) sınıfıdır. 
+ * TES servisi üzerinden çok takipçiye aynı mesaj gönderildikten sonra TES servisinin döndüğü cevabı tutan sınıftır. 
  * 
  * @author BiP AI
  * 
  */
-public class TesMultiUserListRepsonse extends TesResponse {
+public class TesMultiUserSameMessageResponse extends TesResponse {
 
-	private Report report;
+	private Report report;		// Raporlama sistemi gelişme aşamasında olduğundan bu kısım şu anda TES tarafından null dönmektedir.
 
 	public Report getReport() {
 		return report;

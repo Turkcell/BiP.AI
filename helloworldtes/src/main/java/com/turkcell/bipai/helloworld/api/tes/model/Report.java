@@ -1,9 +1,10 @@
-package com.turkcell.bipai.helloworld.model.tes.data;
+package com.turkcell.bipai.helloworld.api.tes.model;
 
 
 /**
  * 
- * Gönderim raporu. Eklenmesi operasyon ekibi tarafından belirlenir. Eğer gönderilmiyorsa null değeri alır.
+ * Geliştirilme aşamasındadır, TES API tarafından şu anda null değeri dönmektetidir.
+ * TES tarafından, web servisinizin yaptığı isteğe cevap olarak gönderilen rapor.
  * Formatı:
  <pre>
 ...
@@ -26,10 +27,10 @@ package com.turkcell.bipai.helloworld.model.tes.data;
 
 public class Report {
 
-	private Integer fileCount;
-	private Integer accepted;
-	private Integer invalid;
-	private Integer actual;
+	private Integer fileCount;	
+	private Integer accepted;	// Kabul edilen kullanıcı sayısı
+	private Integer invalid;	// Hatalı/geri çevrilen alıcı sayısı
+	private Integer actual;		// Gönderimi yapılan alıcı sayısı
 	
 	public Integer getFileCount() {
 		return fileCount;

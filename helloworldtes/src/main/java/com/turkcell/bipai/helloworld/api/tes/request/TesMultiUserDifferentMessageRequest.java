@@ -1,8 +1,8 @@
-package com.turkcell.bipai.helloworld.model.tes.request;
+package com.turkcell.bipai.helloworld.api.tes.request;
 
 import java.util.List;
 
-import com.turkcell.bipai.helloworld.model.tes.data.ReceiverContent;
+import com.turkcell.bipai.helloworld.api.tes.model.ReceiverContent;
 
 /**
  * 
@@ -14,7 +14,7 @@ import com.turkcell.bipai.helloworld.model.tes.data.ReceiverContent;
  * 
  */
 
-public class TesMultiUserRequest extends TesRequest {
+public class TesMultiUserDifferentMessageRequest extends TesRequest {
 	
 	private List<ReceiverContent> receivercontentlist;
 

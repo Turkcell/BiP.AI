@@ -1,6 +1,6 @@
-package com.turkcell.bipai.helloworld.model.tes.request;
+package com.turkcell.bipai.helloworld.api.tes.request;
 
-import com.turkcell.bipai.helloworld.model.tes.data.Receiver;
+import com.turkcell.bipai.helloworld.api.tes.model.Receiver;
 
 /**
  * 

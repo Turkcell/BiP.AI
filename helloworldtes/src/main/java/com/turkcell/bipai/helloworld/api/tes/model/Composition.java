@@ -1,11 +1,11 @@
-package com.turkcell.bipai.helloworld.model.tes.data;
+package com.turkcell.bipai.helloworld.api.tes.model;
 
 import java.util.List;
 
 /**
  * 
  * TES servisine gönderilecek içeriğin listesini tutan model sınıftır. compostion list içerisindeki her
- * bir eleman, alıcıya gönderilecek olan bilgilerin tutulduğu Content modelidir.
+ * bir Content sınıfı takipçinin alacağı mesaj bilgilerini tutar. Her mesajın composition list'inin içerisinde gönderilmesi zorunludur.
  * Formatı:
 <pre>   
 ...
@@ -26,7 +26,7 @@ import java.util.List;
  * 
  */
 public class Composition {
-
+	
 	private List<Content> list;
 
 	public List<Content> getList() {

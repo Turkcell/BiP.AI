@@ -1,4 +1,4 @@
-package com.turkcell.bipai.helloworld.model;
+package com.turkcell.bipai.helloworld.util;
 
 import org.springframework.core.io.ByteArrayResource;
 

@@ -1,8 +1,8 @@
-package com.turkcell.bipai.helloworld.model.rex.request;
+package com.turkcell.bipai.helloworld.api.rex.request;
 
 import java.util.Map;
 
-import com.turkcell.bipai.helloworld.model.rex.data.Composition;
+import com.turkcell.bipai.helloworld.api.rex.model.Composition;
 
 
 /**

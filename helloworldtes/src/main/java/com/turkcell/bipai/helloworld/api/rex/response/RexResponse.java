@@ -1,7 +1,7 @@
 
-package com.turkcell.bipai.helloworld.model.rex.response;
+package com.turkcell.bipai.helloworld.api.rex.response;
 
-import com.turkcell.bipai.helloworld.model.rex.data.Composition;
+import com.turkcell.bipai.helloworld.api.rex.model.Composition;
 
 /**
  * 

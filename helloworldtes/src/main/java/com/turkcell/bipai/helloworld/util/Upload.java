@@ -1,4 +1,4 @@
-package com.turkcell.bipai.helloworld.model;
+package com.turkcell.bipai.helloworld.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,21 +13,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
-import com.turkcell.bipai.helloworld.model.fts.data.Data;
-import com.turkcell.bipai.helloworld.model.fts.request.FtsRequest;
-import com.turkcell.bipai.helloworld.model.fts.response.FtsResponse;
-import com.turkcell.bipai.helloworld.service.Message;
+import com.turkcell.bipai.helloworld.api.fts.request.FtsRequest;
+import com.turkcell.bipai.helloworld.api.fts.response.FtsResponse;
 
 public class Upload {
 
 	private static final Logger logger = LoggerFactory.getLogger(Upload.class);
 	/**
-	 * FTS sunucusna istenen url'deki resmi yükler ve geriye yüklenmiş resmin FTS'deki url'ini döner. 
+	 * FTS sunucusna istenen url'deki fotoğrafı/videoyu yükler ve geriye yüklenmiş resmin/fotoğrafın FTS'deki url'ini döner. 
 	 * 
 	 * @param fileType FTS sunucusuna yüklenecek medyanın tipi, fotoğraf için "P", video için "V"
-	 * @param urlToUploadAndSend FTS sunucusna yüklenecek resmin url'i
+	 * @param urlToUploadAndSend FTS sunucusna yüklenecek resmin/fotoğrafın url'i
 	 * @return imageMap dosyanın url ve size bilgilerini tutan Map dönülür.
 	 * @throws IOException
 	 * @throws URISyntaxException
@@ -59,10 +59,7 @@ public class Upload {
         ftsRequest.add("file", new FileMessageResource(byteArr, System.currentTimeMillis() + ".png"));
         ftsRequest.add("data", new Gson().toJson(ftsRequestData));
 
-		logger.info("Request json: " + new Gson().toJson(ftsRequest));
-		
-		Message message = new Message();
-		FtsResponse ftsResponse = message.send(ftsRequest);
+		FtsResponse ftsResponse = send(ftsRequest);
 		
 		//Upload edilen medyanın bilgilerini bir map'e ekle ve dönüş değeri olarak gönder
 		Map<String, Object> imageMap = new HashMap<String, Object>();
@@ -72,6 +69,35 @@ public class Upload {
 		return imageMap;
 	}
 
+	/**
+	 * FTS servisine dosyayı Multipart-Form-Data formatında yükler.
+	 * 
+	 * @param request data ve file objelerini tutan MultiValueMap
+	 * @return response txnid, status (0-> başarılı, 1->başarısız) ve url bilgileri
+	 * @see <a href="http://www.bip.ai/documentations/cok-kullaniciya-mesaj-gonderimi/">http://www.bip.ai/documentations/cok-kullaniciya-mesaj-gonderimi/</a>
+	 */
+	private FtsResponse send(MultiValueMap<String, Object> request) {
+		FtsResponse response = null;
+		RestTemplate	restTemplate	=	new BasicAuthRestTemplate(AppConstant.USER, AppConstant.PASS);
+		logger.info("Dosya sunucuya yükleniyor..");
+		logger.info("Gönderilen JSON: " + new Gson().toJson(request));
+		
+		try{
+			response		=	restTemplate.postForObject(AppConstant.FTS_URI, request, FtsResponse.class);
+			logger.info("Dosya başarıyla yüklendi!");
+			logger.info("Result Code: " + response.getResultcode() + " URL: " + response.getUrl());
+		}
+		catch(HttpClientErrorException e) {
+			// Değerler serverin beklediği şekilde gönderilmediyse hata döner, bu hatalar yakalanır. 
+			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
+			logger.info("Doğrulama Hata kodu aldınız.");
+			logger.info("Hata: " + e.getResponseBodyAsString());
+			logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/content-type-ozelindeki-kontroller/");
+		}
+		
+		return response;
+		
+	}
 	
 	/**
 	 * Inputstream olarak verilen dosyayı okur ve btye[] olarak geri döndürür. 

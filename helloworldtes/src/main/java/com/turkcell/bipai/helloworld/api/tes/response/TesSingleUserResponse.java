@@ -1,8 +1,8 @@
-package com.turkcell.bipai.helloworld.model.tes.response;
+package com.turkcell.bipai.helloworld.api.tes.response;
 
 /**
  * 
- * TES servisi üzerinden gelen mesajın bilgilerini tutan cevap (response) sınıfıdır. 
+ * TES servisi üzerinden tek takipçiye mesaj gönderildikten sonra TES servisinin döndüğü cevabı tutan sınıftır. 
  * 
  * @author BiP AI
  * 

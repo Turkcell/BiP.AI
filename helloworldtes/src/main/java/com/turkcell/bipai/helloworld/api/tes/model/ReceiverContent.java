@@ -1,10 +1,10 @@
-package com.turkcell.bipai.helloworld.model.tes.data;
+package com.turkcell.bipai.helloworld.api.tes.model;
 
 
 /**
  * 
  * Çok kişiye farklı mesaj gönderilmek istendiğinde her mesaj ReceiverContent modeli olarak 
- * hazırlanır. Mesajlar Receive ve Composition nesneleri olarak oluşturulan ReceiverContent Listesine 
+ * hazırlanır. Mesajlar Receiver ve Composition nesneleri olarak oluşturulan ReceiverContent Listesine 
  * eklenir.
  * Format:
  * 
@@ -37,34 +37,29 @@ package com.turkcell.bipai.helloworld.model.tes.data;
 
 public class ReceiverContent {
 	
-	private Receiver	 	receiver;
-	private Composition 	composition;
-	private Integer			expire;
+	private Receiver	 	receiver;		// Mesajı alacak takipçi bilgilerinin tutulduğu model
+	private Composition 	composition;	// Takipçiye gönderilecek mesaj bilgilerinin tutulduğu model
+	private Integer			expire;			// Mesajın belirli sürü gösterilmesi ve silinmesi isteniyorsa, bu süreyi tutan alan
 	
 	public Receiver getReceiver() {
 		return receiver;
 	}
 	
-	
 	public void setReceiver(Receiver receiver) {
 		this.receiver = receiver;
 	}
-	
 	
 	public Composition getComposition() {
 		return composition;
 	}
 	
-	
 	public void setComposition(Composition composition) {
 		this.composition = composition;
 	}
 
-
 	public Integer getExpire() {
 		return expire;
 	}
-
 
 	public void setExpire(Integer expire) {
 		this.expire = expire;
