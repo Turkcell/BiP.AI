@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.turkcell.bipai.helloworld.api.tes.model.Composition;
 import com.turkcell.bipai.helloworld.api.tes.model.Content;
 import com.turkcell.bipai.helloworld.api.tes.model.Ctype;
 import com.turkcell.bipai.helloworld.api.tes.model.Option;
 import com.turkcell.bipai.helloworld.api.tes.model.Receiver;
-import com.turkcell.bipai.helloworld.api.tes.model.ReceiverContent;
 import com.turkcell.bipai.helloworld.api.tes.model.RichMedia;
 import com.turkcell.bipai.helloworld.api.tes.model.TesInput;
 import com.turkcell.bipai.helloworld.api.tes.request.TesMultiUserDifferentMessageRequest;
@@ -42,9 +40,9 @@ import com.turkcell.bipai.helloworld.util.Upload;
  *
  */
 @RestController
-public class HelloWorld {
+public class HelloWorldTES {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
+	private static final Logger logger = LoggerFactory.getLogger(HelloWorldTES.class);
 
 	/**
 	 * 
