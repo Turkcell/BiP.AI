@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +35,7 @@ import com.turkcell.bipai.helloworld.util.Upload;
 
 /**
  * 
- * TES API'yi kullanarak 1 veya daha fazla içeriğin 1 kullanıcıya veya tüm takipçilere {@link #tekKisiye(TesSingleUserRequest)},
+ * TES API'yi kullanarak takipçiden gelen mesajın alınmasını ve daha sonra 1 veya daha fazla mesajın 1 kullanıcıya veya tüm takipçilere {@link #tekKisiye(TesSingleUserRequest)},
  * 1'den fazla kullanıcıya aynı {@link #cokKisiyeAyni(TesMultiUserSameMessageRequest)}, 1'den fazla kullanıcıya farklı farklı olarak {@link #cokKisiyeFarkli(TesMultiUserDifferentMessageRequest)}
  * gönderilmesini sağlayan örnekler.
  * @author BiP AI
@@ -46,40 +48,41 @@ public class HelloWorldTES {
 
 	/**
 	 * 
-	 * TesInput gövdesinden JSON formatında sender, type, content gibi bilgileri alarak content tipine göre cevap (response) oluşturur 
+	 * TES'in takipçiden alıp ilettiği mesajı TesInput gövdesinden JSON formatında alarak TES'e HTTP 200 döner. Gelen mesaj tipine göre cevap (response) oluşturur 
 	 * ve kullanıcıya gönderilmesini sağlayan ilgili metodları çağırır. 
 	 * @param biPTesInput JSON formatında giriş Ör:
 	 * <pre>
 	 * {
 		   "sender":"05a6d402f40383e4c016302e2dca75a2",
-		   "msgid":1907,
+		   "msgid":9321,
 		   "sendtime":"12.10.2015 08:00:00.123 +0300",
 		   "type":"M",
 		   "ctype":"I",
-		   "content":"你好"
+		   "content":"merhaba"
 		}
 	 * </pre>
 	 * 
 	 */
-	@RequestMapping(value = "/hello", method = RequestMethod.POST, produces = "application/json")
-	public void hello(@RequestBody TesInput biPTesInput) {
+	@RequestMapping(value = "/helloTES", method = RequestMethod.POST, produces = "application/json")
+	public BodyBuilder hello(@RequestBody TesInput biPTesInput) {
 		
 		// Gelen input, mesaj da olsa bildirim de olsa gelen JSON içerisinde bulunacak kısımlar
 		String	sender		=	biPTesInput.getSender();
 		Integer	msgid		=	biPTesInput.getMsgid();
 		String	sendtime	=	biPTesInput.getSendtime();
-		String	type		=	biPTesInput.getType();
-		//
+		String	type		=	biPTesInput.getType();		// Takipçiden gelen mesaj web servisinize iletildiyse "M", takip etme/takibi
+															// bırakma gibi bir bildirim geldiyse "E" değeri olarak gelir.
 		
 		// Gelen input, takipçinin gönderdiği bir mesaj ise gelen JSON içerisinde bulunacak kısımlar
-		String	ctype	=	biPTesInput.getCtype();
+		String	ctype		=	biPTesInput.getCtype();
 		String	content		=	biPTesInput.getContent();
-		Integer pollid		=	biPTesInput.getPollid();	// ctype "R" ise bir değer gelecektir.
-		Integer optionid	=	biPTesInput.getOptionid();	// ctype "R" ise bir edğer gelecektir.
+		Integer pollid		=	biPTesInput.getPollid();	// ctype "R" yani anket ise bir değer gelecektir
+		Integer optionid	=	biPTesInput.getOptionid();	// ctype "R" yani anket ise bir değer gelecektir
 		
 		// Gelen input, kullanıcının abone olması veya aboneliği bırakması ile ilgili bir bildirimse gelen JSON içerisinde bulunacak kısımlar
 		String event		=	biPTesInput.getEvent();
 		
+		// Takipçi sistemimizde tanımlı komutları kullandıysa, ilgili sınıflarla cevap verilir
 		Command	command		=	null;
 		
 		// type "M" değerine eşitse TES, takipçinin gönderidği mesaja biPTesInput içerisinde gönderdi.
@@ -105,7 +108,7 @@ public class HelloWorldTES {
 				case Image:
 					logger.info("Takipçiden Image tipinde mesaj alındı. Takipçiye Image tipinde mesaj atılıyor...");					
 					try {
-						respondWithImage(sender, ctype, "http://bip.ai/wp-content/themes/bip-developers/assets/images/logo-cogs.png");
+						respondWithImage(sender, ctype, content);
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (URISyntaxException e) {
@@ -115,12 +118,24 @@ public class HelloWorldTES {
 				case Location:
 					logger.info("Takipçiden Location tipinde mesaj alındı. Takipçiye Location tipinde mesaj atılıyor...");
 					break;
-				case RMM:
-					int rmmType = new Random().nextInt(3-0);	// 0 ile 3 arasında rastgele bir sayı üret ve takipçiye bu değere karşılık gelen 1 = Tekil RMM, 2 = Çoğul RMM, 3 = Anket RMM gönder
-					logger.info("Takipçiden RMM tipinde mesaj alındı. Takipçiye RMM tipinde mesaj atılıyor...");
-
-					if(AppConstant.SINGLE_RMM == rmmType) {
-						logger.info("Tekil RMM gönderiliyor...");
+				case Sticker:
+					logger.info("Takipçiden Sticker tipinde mesaj alındı. Takipçiye Sticker tipinde mesaj atılıyor...");
+					break;
+				case Text:
+					logger.info("Takipçiden Text tipinde mesaj alındı.");
+					
+					// Takipçi /yardım komutu gönderdiyse, komutu algıla ve hazırladığınız yardım rehberini görüntüle.
+					if ("/yardım".equals(content)) {
+						
+						command	=	new HelpCommand();
+						respondWithText(sender, ctype, command.handle(sender, null));
+						
+					} else if(content.toLowerCase().contains("rmm")) {
+						ctype = "R";
+						logger.info("Takipçiye RMM tipinde mesaj atılıyor...");
+						
+						if(content.toLowerCase().contains("tekil")) {
+							logger.info("Tekil RMM gönderiliyor...");
 							try {
 								respondWithSingleRMM(sender, ctype, "http://bip.ai/wp-content/themes/bip-developers/assets/images/logo-cogs.png");
 							} catch (IOException e) {
@@ -129,24 +144,23 @@ public class HelloWorldTES {
 								e.printStackTrace();
 							}
 							break;
-					} 
-					else if(AppConstant.MULTI_RMM == rmmType) {
-						logger.info("Çoklu RMM gönderiliyor...");
-						List<String> photos		=	new ArrayList<String>();
-						photos.add("http://bip.ai/wp-content/themes/bip-developers/assets/images/logo-cogs.png");
-						photos.add("https://testtims.turkcell.com.tr/scontent/p2p/28032016/11/P677c015930d282d875be6c13bd917b14dd30def44b817196f06d5fac5bbdd7680.jpg");
-						photos.add("http://www.bip.ai/wp-content/uploads/2016/05/slider1-254x300.png");
-							try {
-								respondWithMultiRMM(sender, ctype, photos);
-							} catch (IOException e) {
-								e.printStackTrace();
-							} catch (URISyntaxException e) {
-								e.printStackTrace();
-							}
-							break;
-					}
-					else if(AppConstant.POLL_RMM == rmmType) {
-						logger.info("Anket RMM gönderiliyor...");
+						}
+						else if(content.toLowerCase().contains("çoğul")) {
+							logger.info("Çoklu RMM gönderiliyor...");
+							List<String> photos		=	new ArrayList<String>();
+							photos.add("http://bip.ai/wp-content/themes/bip-developers/assets/images/logo-cogs.png");
+							photos.add("https://testtims.turkcell.com.tr/scontent/p2p/28032016/11/P677c015930d282d875be6c13bd917b14dd30def44b817196f06d5fac5bbdd7680.jpg");
+							photos.add("http://www.bip.ai/wp-content/uploads/2016/05/slider1-254x300.png");
+								try {
+									respondWithMultiRMM(sender, ctype, photos);
+								} catch (IOException e) {
+									e.printStackTrace();
+								} catch (URISyntaxException e) {
+									e.printStackTrace();
+								}
+								break;
+						}
+						else if(content.toLowerCase().contains("anket")) {
 							try {
 								respondWithPollRMM(sender, ctype, "http://bip.ai/wp-content/themes/bip-developers/assets/images/logo-cogs.png");
 							} catch (IOException e) {
@@ -155,18 +169,11 @@ public class HelloWorldTES {
 								e.printStackTrace();
 							}
 							break;
+						}
 					}
-					break;
-				case Sticker:
-					logger.info("Takipçiden Sticker tipinde mesaj alındı. Takipçiye Sticker tipinde mesaj atılıyor...");
-					break;
-				
-				case Text:
-					logger.info("Takipçiden Text tipinde mesaj alındı. Takipçiye Text tipinde mesaj atılıyor...");
-					if ("yardım".equals(content)) {
-						command	=	new HelpCommand();
-						respondWithText(sender, ctype, command.handle(sender, null));
-					} else {
+
+					else {
+						logger.info("Takipçiye Text tipinde mesaj atılıyor..");
 						respondWithText(sender, ctype, "Merhaba dünya!");
 					}
 					break;
@@ -182,7 +189,12 @@ public class HelloWorldTES {
 		else if("E".equals(type)) {
 			logger.info("TES API'den bildirim alınıyor...");
 			logger.info("CEVAP: " + "sender: " + sender + " - msgid: " + msgid + " - sendtime: " + sendtime + " - type: " + type + " - event: " + event);
+			if(event.equals("U"))
+				logger.info("Bir takipçi kaybettiniz.");
+			if(event.equals("S"))
+				logger.info("Yeni bir takipçiniz var.");
 		}
+		return ResponseEntity.ok();		// Mesaj veya bildirim alındıktan sonra TES'e HTTP 200 dönülmelidir.
 	}
 	
 	
@@ -190,7 +202,7 @@ public class HelloWorldTES {
 	/**
 	 * 
 	 * Web servisinize mesaj gönderen takipçinin "sender" bilgisini kullanarak takipçiye metin mesajı gönderir. TES API'sinin tek takipçiye mesaj gönderirken 
-	 * kabul ettiği mesaj formatı olan esSingleUserRequest modeline gönderilecek bilgiler setlenir.
+	 * kabul ettiği mesaj formatı olan SingleUserRequest modeline gönderilecek bilgiler setlenir.
 	 * @param sender	takipçinin adres bilgisi (telefon numarası - varsayılan olarak karıştırılmış(opaque) numara)
 	 * @param type		takipçinin web servisinize gönderdiği mesaj tipi
 	 * @param message	takipçiye gönderilecek mesaj
@@ -213,7 +225,7 @@ public class HelloWorldTES {
 		
 		Integer ctype = Ctype.fromCharToInteger(type);		// gelen A, I, T gibi mesaj tipini temsil eden karakterlerin integer karşılığı alınır.
 
-		content.setType(ctype);									// mesajın tipi integer olarak Content'e set edilir.
+		content.setType(ctype);								// mesajın tipi integer olarak Content'e set edilir.
 		content.setMessage(message);						// mesaj Content'e set edilir.
 		contents.add(content);								// oluşturulan content, contents listesine set edilir.
 		
@@ -245,10 +257,6 @@ public class HelloWorldTES {
 
 		String ftsImageUrl 				= 	imageMap.get("url").toString(); 			// Görselin URL'i
 		int size 						= 	(int)imageMap.get("size"); 					// Görselin boyutu
-
-		/**
-		 * FTS sunucusuna yüklenen resmi URL'ini kullanarak gönder.
-		 */;
 		
 		Composition 	composition 	= 	new Composition();				
 		List<Content> 	contents		=	new ArrayList<Content>();		
@@ -414,7 +422,7 @@ public class HelloWorldTES {
 		richmedia.setImage(ftsImageUrl); 										// anket fotoğrafı ayarlandı. Link FTS'e yüklü olmalıdır.
 		richmedia.setRatio(1.0F);												// ratio ayarlandı.
 		richmedia.setDescription("Bip API'yi nasıl buldun?");					// açıklama girildi.
-		richmedia.setPollendtime("12.09.2016 10:55:00.000 +0300"); 				// anket bitiş tarihi girildi. Burayı ileri tarihe set etmeniz gerek. Formatı dd.MM.yyyy HH:mm:ss.SSS ZZZZ olmalıdır.
+		richmedia.setPollendtime("21.09.2016 10:55:00.000 +0300"); 				// anket bitiş tarihi girildi. Burayı ileri tarihe set etmeniz gerek. Formatı dd.MM.yyyy HH:mm:ss.SSS ZZZZ olmalıdır.
 		
 		List<Option> options			=	new ArrayList<Option>();			// anket seçenekleri ayarlanıyor. En az 2, en fazla 4 seçenek eklenebilir.
 		options.add(new Option(1, "Çok iyi!"));
@@ -435,4 +443,5 @@ public class HelloWorldTES {
 		
 		service.send(request); 													// değşiklikleri yapılan input, takipçiye send fonksiyonuyla gönderilir.
 	}
+	
 }

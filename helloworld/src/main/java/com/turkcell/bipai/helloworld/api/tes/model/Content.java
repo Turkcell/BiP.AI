@@ -50,7 +50,7 @@ public class Content {
 	private Float				lon;			// Sadece lokasyon türü için bu alan zorunlu ve anlamlıdır. Gönderilecek konumun boylam değeridir.
 	
 	/*
-	 *  Gönderilecek richmedia mesajının alt tipi. JSON çıktısında richmediatype 
+	 *  Gönderilecek richmedia mesajının tipi. JSON çıktısında richmediatype 
 	 *  olarak görünmesi gerektiği için SerializedName ile özelleştirme yapılmıştır. 
 	 *  Sadece RMM türü için bu alan zorunlu ve anlamlıdır. Gönderilecek RMM’in türü. Alabileceği değerler:
 		0 : Tekil
@@ -58,7 +58,7 @@ public class Content {
 		2 : Anket
 	 */
 	@SerializedName("richmediatype")
-	private Integer					richMediaType;
+	private Integer				richMediaType;
 	
 	/*
 	 *  Gönderilecek richmediaların listesi JSON çıktısında richmedialist 

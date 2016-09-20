@@ -9,7 +9,7 @@ package com.turkcell.bipai.helloworld.api.fts.request;
  */
 public class FtsRequest {
 	
-	// Mesaj tekil id'si
+		// Mesaj tekil id'si
 		private String		txnid;
 		// Mesaj alıcısı. Boş bırakılacak
 		private String		receiver;

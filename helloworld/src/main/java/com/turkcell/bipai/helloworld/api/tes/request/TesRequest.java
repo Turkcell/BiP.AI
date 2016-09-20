@@ -6,7 +6,7 @@ import com.turkcell.bipai.helloworld.api.tes.model.Composition;
 /**
  * 
  * TES servisi üzerinden mesaj göndermek için TES servisinin kabul ettiği JSON formatına uygun alanları tutan talep (request) sınıfıdır.
- * Mesajın tek kullanıcı, çok kullanıcı veya çok kulalnıcıya farklı gönderim çeşitlerinden biri
+ * Mesajın tek kullanıcı veya çok kullanıcı aynı mesaj gönderim çeşitlerinden biri
  * olmasına bağlı olarak alt sınıflar tarafından extend edilir.
  * 
  * @author BiP AI

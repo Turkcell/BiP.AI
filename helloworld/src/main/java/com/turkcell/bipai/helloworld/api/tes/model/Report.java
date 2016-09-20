@@ -27,7 +27,7 @@ package com.turkcell.bipai.helloworld.api.tes.model;
 
 public class Report {
 
-	private Integer fileCount;	
+	private Integer fileCount;	// Dosya sıyısı
 	private Integer accepted;	// Kabul edilen kullanıcı sayısı
 	private Integer invalid;	// Hatalı/geri çevrilen alıcı sayısı
 	private Integer actual;		// Gönderimi yapılan alıcı sayısı

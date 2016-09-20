@@ -21,7 +21,7 @@ public class Service {
 	 * TES servisinin sendmsgserv metodunu kullanarak, request nesnesi içinde belirtilen bir kullanıcıya veya 
 	 * servisin tüm takipçilerine mesaj/mesaj dizisi gönderir. Tek kullanıcıya mesaj gönderilmek isteniyorsa Receiver nesnesinin
 	 * type değişkeni "0" (Karıştırılmış-Opaque numara) veya "2" (MSISDN - gerçek numara) olmalı, tüm takipçilere gönderilmek 
-	 * isteniyorsa "1" olmalıdır.
+	 * isteniyorsa "1" olmalıdır. Varsayılan type değişkeni "0" dır.
 	 * 
 	 * @param request JSON olarak gönderilecek olan TesSingleUserRequest objesidir.
 	 * @see <a href="http://www.bip.ai/documentations/tek-kullaniciya-mesaj-gonderimi/">http://www.bip.ai/documentations/tek-kullaniciya-mesaj-gonderimi/</a>
@@ -34,13 +34,15 @@ public class Service {
 		
 		try{
 			TesSingleUserResponse response		=	restTemplate.postForObject(AppConstant.SINGLE_USER, request, TesSingleUserResponse.class);
-			logger.info("Mesaj başarıyla gönderildi!");
-			logger.info("Result Code: " + response.getResultcode());
+			if(response.getResultcode() == 0)
+				logger.info("Mesaj başarıyla gönderildi!");
+			else {
+				logger.info("Hata kodu aldınız.");
+				logger.info("resultcode: " + response.getResultcode());
+				logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/hata-kodlari/");
+			}
 		}
 		catch(HttpClientErrorException e) {
-			// Değerler serverin beklediği şekilde gönderilmediyse hata döner, bu hatalar yakalanır. 
-			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
-			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
 			logger.info("Doğrulama Hata kodu aldınız.");
 			logger.info("Hata: " + e.getResponseBodyAsString());
 			logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/content-type-ozelindeki-kontroller/");
@@ -64,12 +66,15 @@ public class Service {
 			TesMultiUserSameMessageResponse response		=	restTemplate.postForObject(AppConstant.MULTI_USER_LIST, request, TesMultiUserSameMessageResponse.class);
 			// TES raporlama fonksiyonu geliştirilmekte olup şu anda null değeri dönmektedir..
 			// logger.info("Result Code: " + response.getResultcode() + " Report: " + response.getReport());
-			logger.info("Mesaj başarıyla gönderildi!");
-			logger.info("Result Code: " + response.getResultcode());
+			if(response.getResultcode() == 0)
+				logger.info("Mesaj başarıyla gönderildi!");
+			else {
+				logger.info("Hata kodu aldınız.");
+				logger.info("resultcode: " + response.getResultcode());
+				logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/hata-kodlari/");
+			}
 		}
 		catch(HttpClientErrorException e) {
-			// Değerler serverin beklediği şekilde gönderilmediyse hata döner, bu hatalar yakalanır. 
-			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
 			logger.info("Doğrulama Hata kodu aldınız.");
 			logger.info("Hata: " + e.getResponseBodyAsString());
 			logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/content-type-ozelindeki-kontroller/");
@@ -93,13 +98,15 @@ public class Service {
 			TesMultiDifferentMessageResponse response		=	restTemplate.postForObject(AppConstant.MULTI_USER, request, TesMultiDifferentMessageResponse.class);
 			// TES raporlama fonksiyonu geliştirilmekte olup şu anda null değeri dönmektedir..
 			// logger.info("Result Code: " + response.getResultcode() + " Report: " + response.getReport());			
-			logger.info("Mesaj başarıyla gönderildi!");
-			logger.info("Result Code: " + response.getResultcode());
+			if(response.getResultcode() == 0)
+				logger.info("Mesaj başarıyla gönderildi!");
+			else {
+				logger.info("Hata kodu aldınız.");
+				logger.info("resultcode: " + response.getResultcode());
+				logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/hata-kodlari/");
+			}
 		}
 		catch(HttpClientErrorException e) {
-			// Değerler serverin beklediği şekilde gönderilmediyse hata döner, bu hatalar yakalanır. 
-			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
-			// Doğrulama hata kodalır için http://www.bip.ai/documentations/dogrulama-hata-kodlari/
 			logger.info("Doğrulama Hata kodu aldınız.");
 			logger.info("Hata: " + e.getResponseBodyAsString());
 			logger.info("Daha fazla bilgi için: http://www.bip.ai/documentations/content-type-ozelindeki-kontroller/");

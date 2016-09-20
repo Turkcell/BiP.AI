@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * 
  * Zengin İçerikli Medya (RMM) bilgilerinin tutulduğu modeldir. Tekil ve Anket tipi RMM gönderimlerinde listeye 1 adet obje eklenir. 
- * Çoğul tipi gönderimlerde listedeki ilk eleman RMM’in üst kısmında, diğer elemanlar alt madde olarak görülür.
+ * Çoğul tipi gönderimlerde listedeki ilk eleman telefon ekranında RMM’in üst kısmında ana resim olarak, diğer elemanlar alt madde olarak görülür.
  * Formatı:
  <pre>
 ...

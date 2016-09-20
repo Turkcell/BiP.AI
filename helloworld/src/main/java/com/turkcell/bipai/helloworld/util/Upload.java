@@ -26,11 +26,11 @@ public class Upload {
 	/**
 	 * FTS sunucusna istenen url'deki fotoğrafı/videoyu yükler ve geriye yüklenmiş resmin/fotoğrafın FTS'deki url'ini döner. 
 	 * 
-	 * @param fileType FTS sunucusuna yüklenecek medyanın tipi, fotoğraf için "P", video için "V"
-	 * @param urlToUploadAndSend FTS sunucusna yüklenecek resmin/fotoğrafın url'i
-	 * @return imageMap dosyanın url ve size bilgilerini tutan Map dönülür.
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 * @param	fileType FTS sunucusuna yüklenecek medyanın tipi, fotoğraf için "P", video için "V"
+	 * @param 	urlToUploadAndSend FTS sunucusna yüklenecek resmin/fotoğrafın url'i
+	 * @return 	imageMap dosyanın url ve size bilgilerini tutan Map dönülür.
+	 * @throws 	IOException
+	 * @throws 	URISyntaxException
 	 * 
 	 * @see <a href="http://www.bip.ai/documentations/fts-api/">FTS detaylı bilgi</a>
 	 */
@@ -39,24 +39,24 @@ public class Upload {
 		 * FTS servisinin upload methodu ile gönderilecek dosyayı FTS sunucusuna yükle ve url'ini al
 		 */
 		FtsRequest ftsRequestData = new FtsRequest();
-		ftsRequestData.setTxnid(UUID.randomUUID().toString()); //Random bir txn id al
-		ftsRequestData.setReceiver(""); // Boş bırakılacak
-		ftsRequestData.setAvatarOwner(""); // Boş bırakılacak
-		ftsRequestData.setIsGroup("false"); // false değer verilmeli
-		ftsRequestData.setIsAvatar("false"); // false değer verilmeli
-		ftsRequestData.setToUser(""); // Boş bırakılacak
-		ftsRequestData.setFileType(fileType); // fotoğraf için "P", video için "V" girilmeli
+		ftsRequestData.setTxnid(UUID.randomUUID().toString());	 //Random bir txn id al
+		ftsRequestData.setReceiver(""); 						 // Boş bırakılacak
+		ftsRequestData.setAvatarOwner(""); 						 // Boş bırakılacak
+		ftsRequestData.setIsGroup("false"); 					 // false değer verilmeli
+		ftsRequestData.setIsAvatar("false");					 // false değer verilmeli
+		ftsRequestData.setToUser(""); 							 // Boş bırakılacak
+		ftsRequestData.setFileType(fileType); 					 // fotoğraf için "P", video için "V" girilmeli
 
-		//Gönderilecek dosyayı url'ini kullanarak oku. Boyut bilgilerini al. 
+		//Gönderilecek dosyayı url'ini kullanarak byte array olarak oku. Boyut bilgilerini al. 
 		URL url 				= new URL(urlToUploadAndSend);
 		InputStream inputStream = url.openStream();
 		byte[] byteArr 			= getBytesFromInputStream(inputStream);
 		int imageSize			= byteArr.length;
 		
-		//file ve data bilgilerini rest çağrısına göndermek için Map'e ekle. FTS sunucusu Multipart-Form-Data kabul ettiğinden
+		// file ve data bilgilerini rest çağrısına göndermek için Map'e ekle. FTS sunucusu Multipart-Form-Data kabul ettiğinden
 		// file ve data MultiValueMap'e eklenir.
 		final MultiValueMap<String, Object> ftsRequest = new LinkedMultiValueMap<String, Object>();
-        ftsRequest.add("file", new FileMessageResource(byteArr, System.currentTimeMillis() + ".png"));
+        ftsRequest.add("file", new FileMessageResource(byteArr, System.currentTimeMillis() + ".png")); // byte array'den byte array input stream oluşturulur ve isteğe eklenir.
         ftsRequest.add("data", new Gson().toJson(ftsRequestData));
 
 		FtsResponse ftsResponse = send(ftsRequest);
@@ -77,13 +77,13 @@ public class Upload {
 	 * @see <a href="http://www.bip.ai/documentations/cok-kullaniciya-mesaj-gonderimi/">http://www.bip.ai/documentations/cok-kullaniciya-mesaj-gonderimi/</a>
 	 */
 	private FtsResponse send(MultiValueMap<String, Object> request) {
-		FtsResponse response = null;
+		FtsResponse response 			= 	null;
 		RestTemplate	restTemplate	=	new BasicAuthRestTemplate(AppConstant.USER, AppConstant.PASS);
 		logger.info("Dosya sunucuya yükleniyor..");
 		logger.info("Gönderilen JSON: " + new Gson().toJson(request));
 		
 		try{
-			response		=	restTemplate.postForObject(AppConstant.FTS_URI, request, FtsResponse.class);
+			response					=	restTemplate.postForObject(AppConstant.FTS_URI, request, FtsResponse.class);
 			logger.info("Dosya başarıyla yüklendi!");
 			logger.info("Result Code: " + response.getResultcode() + " URL: " + response.getUrl());
 		}
@@ -101,7 +101,7 @@ public class Upload {
 	
 	/**
 	 * Inputstream olarak verilen dosyayı okur ve btye[] olarak geri döndürür. 
-	 * @param is okunacak input stream
+	 * @param  okunacak input stream
 	 * @return okunan input stream'i btye[] olarak geri döndürür.
 	 * @throws IOException
 	 */
