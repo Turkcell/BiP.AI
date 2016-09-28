@@ -27,13 +27,9 @@ import com.turkcell.bipai.helloworld.command.HelpCommand;
 @RestController
 public class HelloWorldREX {
 
-<<<<<<< HEAD
 
 	private static final Logger logger = Logger.getLogger(HelloWorldREX.class.getName());
-=======
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorldREX.class);
 
->>>>>>> 9176d6b1d71e24f98047c1e41558f74997b1f3e5
 	/**
 	 * 
 	 * Talep (request) gövdesinden JSON formatında sender, type, content gibi bilgileri alarak content tipine göre cevap (response) oluşturur 
