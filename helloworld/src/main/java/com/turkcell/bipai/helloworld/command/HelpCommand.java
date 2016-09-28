@@ -15,8 +15,11 @@ public class HelpCommand implements Command {
 	
 	@Override
 	public String handle(String sender, List<Object> params) {
-		return	" HelloWorld Servisi yazılan mesajları karşılar. \n" + 
-				" Resim olarak mesaj gönderebilirsiniz.";
+		return	" Kullanabileceğiniz komutlar:\n" +
+				" '/yardım' \n" +
+				" 'rmm tekil' \n" + 
+				" 'rmm çoğul' \n"+ 
+				" 'rmm anket";
 	}
 
 	

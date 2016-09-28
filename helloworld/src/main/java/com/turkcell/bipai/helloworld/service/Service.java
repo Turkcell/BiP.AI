@@ -1,7 +1,7 @@
 package com.turkcell.bipai.helloworld.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
+
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +16,9 @@ import com.turkcell.bipai.helloworld.util.AppConstant;
 import com.turkcell.bipai.helloworld.util.BasicAuthRestTemplate;
 
 public class Service {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
+
+	private static final Logger logger = Logger.getLogger(Service.class.getName());	
+	
 	/**
 	 * TES servisinin sendmsgserv metodunu kullanarak, request nesnesi içinde belirtilen bir kullanıcıya veya 
 	 * servisin tüm takipçilerine mesaj/mesaj dizisi gönderir. Tek kullanıcıya mesaj gönderilmek isteniyorsa Receiver nesnesinin

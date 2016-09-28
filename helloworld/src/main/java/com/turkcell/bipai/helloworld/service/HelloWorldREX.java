@@ -2,9 +2,8 @@ package com.turkcell.bipai.helloworld.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,8 +27,8 @@ import com.turkcell.bipai.helloworld.command.HelpCommand;
 @RestController
 public class HelloWorldREX {
 
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorldREX.class);
 
+	private static final Logger logger = Logger.getLogger(HelloWorldREX.class.getName());
 	/**
 	 * 
 	 * Talep (request) gövdesinden JSON formatında sender, type, content gibi bilgileri alarak content tipine göre cevap (response) oluşturur 

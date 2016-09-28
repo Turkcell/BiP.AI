@@ -20,7 +20,7 @@ package com.turkcell.bipai.helloworld.api.tes.model;
 }
 ...
 </pre>
- * @see <a href="http://www.bip.ai/documentations/coklu-kullaniciya-mesaj-gonderimi-liste-ile/">Gönderim raporu</a>
+ * @see <a href="http://www.bip.ai/documentations/birden-fazla-kullaniciya-ayni-mesaj-gonderimi/">Gönderim raporu</a>
  * @author BiP AI
  * 
 */

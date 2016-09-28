@@ -8,9 +8,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,7 +21,9 @@ import com.turkcell.bipai.helloworld.api.fts.response.FtsResponse;
 
 public class Upload {
 
-	private static final Logger logger = LoggerFactory.getLogger(Upload.class);
+
+	private static final Logger logger = Logger.getLogger(Upload.class.getName());
+	
 	/**
 	 * FTS sunucusna istenen url'deki fotoğrafı/videoyu yükler ve geriye yüklenmiş resmin/fotoğrafın FTS'deki url'ini döner. 
 	 * 

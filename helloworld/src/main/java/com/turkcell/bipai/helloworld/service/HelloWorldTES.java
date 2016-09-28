@@ -6,11 +6,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +42,7 @@ import com.turkcell.bipai.helloworld.util.Upload;
 @RestController
 public class HelloWorldTES {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorldTES.class);
+	private static final Logger logger = Logger.getLogger(HelloWorldTES.class.getName());
 
 	/**
 	 * 
@@ -174,7 +172,9 @@ public class HelloWorldTES {
 
 					else {
 						logger.info("Takipçiye Text tipinde mesaj atılıyor..");
-						respondWithText(sender, ctype, "Merhaba dünya!");
+						respondWithText(sender, ctype, "Merhaba! TES API'nin yeteneklerinden örnekler gösterildiği servisimize hoşgeldiniz. "
+								+ " Örnek servisimizde takipçiden mesaj alıp; takipçiye metin, fotoğraf ve 3 farklı rmm mesajlarının (tekil, çoğul, anket) TES API kullanılarak"
+								+ " gönderilmesi işlenmiştir. TES API'nin daha fazla yeteneğini http://www.bip.ai/documentations/tes-api/ adresinden keşfedebilirsiniz.");
 					}
 					break;
 					
@@ -422,7 +422,7 @@ public class HelloWorldTES {
 		richmedia.setImage(ftsImageUrl); 										// anket fotoğrafı ayarlandı. Link FTS'e yüklü olmalıdır.
 		richmedia.setRatio(1.0F);												// ratio ayarlandı.
 		richmedia.setDescription("Bip API'yi nasıl buldun?");					// açıklama girildi.
-		richmedia.setPollendtime("21.09.2016 10:55:00.000 +0300"); 				// anket bitiş tarihi girildi. Burayı ileri tarihe set etmeniz gerek. Formatı dd.MM.yyyy HH:mm:ss.SSS ZZZZ olmalıdır.
+		richmedia.setPollendtime("29.09.2016 10:55:00.000 +0300"); 				// anket bitiş tarihi girildi. Burayı ileri tarihe set etmeniz gerek. Formatı dd.MM.yyyy HH:mm:ss.SSS ZZZZ olmalıdır.
 		
 		List<Option> options			=	new ArrayList<Option>();			// anket seçenekleri ayarlanıyor. En az 2, en fazla 4 seçenek eklenebilir.
 		options.add(new Option(1, "Çok iyi!"));
