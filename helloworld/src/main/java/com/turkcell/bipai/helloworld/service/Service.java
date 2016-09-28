@@ -1,7 +1,6 @@
 package com.turkcell.bipai.helloworld.service;
 
 import java.util.logging.Logger;
-
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,7 +55,7 @@ public class Service {
 	 * TES servisinin sendmsgservlist metodunu kullanarak, request nesnesi içinde belirtilen birden fazla kullanıcıya aynı mesaj/mesaj dizisini gönderir. 
 	 * 
 	 * @param request JSON olarak gönderilecek olan TesMultiUserListRequest objesidir.
-	 * @see <a href="http://www.bip.ai/documentations/coklu-kullaniciya-mesaj-gonderimi-liste-ile/">http://www.bip.ai/documentations/coklu-kullaniciya-mesaj-gonderimi-liste-ile/</a>
+	 * @see <a href="http://www.bip.ai/documentations/birden-fazla-kullaniciya-farkli-mesaj-gonderimi/">http://www.bip.ai/documentations/birden-fazla-kullaniciya-ayni-mesaj-gonderimi/</a>
 	 */
 	protected void send(TesMultiUserSameMessageRequest request) {
 		

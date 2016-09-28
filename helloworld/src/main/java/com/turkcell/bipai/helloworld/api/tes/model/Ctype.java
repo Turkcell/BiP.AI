@@ -21,6 +21,7 @@ package com.turkcell.bipai.helloworld.api.tes.model;
  * @author BiP AI
  *
  * @see <a href="http://www.bip.ai/documentations/birden-fazla-kullaniciya-ayni-mesaj-gonderimi/">http://www.bip.ai/documentations/birden-fazla-kullaniciya-ayni-mesaj-gonderimi/</a>
+
  */
 
 public enum Ctype {

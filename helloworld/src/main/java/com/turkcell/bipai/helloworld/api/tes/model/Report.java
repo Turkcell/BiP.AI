@@ -20,7 +20,9 @@ package com.turkcell.bipai.helloworld.api.tes.model;
 }
 ...
 </pre>
+
  * @see <a href="http://www.bip.ai/documentations/birden-fazla-kullaniciya-ayni-mesaj-gonderimi/">Gönderim raporu</a>
+
  * @author BiP AI
  * 
 */

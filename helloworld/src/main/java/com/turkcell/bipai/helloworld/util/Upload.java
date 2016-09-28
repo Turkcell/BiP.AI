@@ -21,10 +21,8 @@ import com.turkcell.bipai.helloworld.api.fts.response.FtsResponse;
 
 public class Upload {
 
-
 	private static final Logger logger = Logger.getLogger(Upload.class.getName());
 	
-	/**
 	 * FTS sunucusna istenen url'deki fotoğrafı/videoyu yükler ve geriye yüklenmiş resmin/fotoğrafın FTS'deki url'ini döner. 
 	 * 
 	 * @param	fileType FTS sunucusuna yüklenecek medyanın tipi, fotoğraf için "P", video için "V"
