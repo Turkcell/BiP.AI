@@ -1,0 +1,10 @@
+{
+ "API_USER":"username",
+ "API_PASS":"password",
+ "PAYMENT_BASE_URL": "http://apigw.tvoip.turkcell.com.tr/pgw",
+ "PAYMENT_SERVICE": "/paymentService",
+ "PAYMENT_COMMIT": "/commitService",
+ "PAYMENT_CHANNEL":"40",
+ "TES_BASE_URI":"https://prptims.turkcell.com.tr/tes/rest/spi",
+ "TES_SINGLE_USER":"/sendmsgserv"
+}
