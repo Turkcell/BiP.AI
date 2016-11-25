@@ -184,6 +184,9 @@ TES API'nin çok kullanıcıya aynı ve çok kullanıcıya farklı mesaj gönder
 
 Çok kullanıcıya farklı mesaj göndermek için mesaj gönderilecek kullanıcılar ve her bir kullanıcıya gönderilecek mesaj bir Map içerisine eklenerek **respondWithTextMultiUserDifferentMessage** fonksiyonu çağırılır. Bu fonksiyon gönderilecek measjı TES'in kabal ettiği JSON formatı olan **TesMultiUserDifferentMessageRequest** sınıfında oluşturur ve mesajı kullanıcılara iletir.
 
+### MerchantSimulator 
+Payment Servis üzerinden ödeme işlemlerini gerçekleştiren simülatördür. Bu örnek için detaylı bilgiye [MerchantSimulator klasöründen](https://github.com/Turkcell/BiP.AI/tree/master/MerchantSimulator) ulaşabilirsiniz.
+
 ## Bundan sonra ...
 
 BiP API'leriyle yolculuğunuzda başarılar diliyoruz.
